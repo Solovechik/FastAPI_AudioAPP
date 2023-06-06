@@ -7,7 +7,7 @@ def create_db_user(db: Session, username: str) -> User:
     """
     Saves and returns a single user object.
     """
-    new_user: User = User(username)
+    new_user: User = User(name=username)
     db.add(new_user)
     db.commit()
 
@@ -27,7 +27,7 @@ def insert_db_audio(db: Session, filename: str, record: str, user_id: int) -> Re
     """
     Saves and returns a single record object.
     """
-    new_record: Record = Record(filename, record, user_id)
+    new_record: Record = Record(filename=filename, record=record, user_id=user_id)
     db.add(new_record)
     db.commit()
 

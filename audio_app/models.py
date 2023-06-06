@@ -1,31 +1,23 @@
 import uuid
 
-from sqlalchemy import Column, Integer, String, UUID, LargeBinary, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy import Integer, String, UUID, LargeBinary, ForeignKey
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from audio_app.db import Base
 
 
 class User(Base):
     __tablename__ = 'audio_users'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
-    token = Column(UUID(as_uuid=True), default=uuid.uuid4)
-    records = relationship('Record', back_populates='user')
-
-    def __init__(self, name):
-        self.name = name
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    token: Mapped[UUID] = mapped_column(UUID(as_uuid=True), default=uuid.uuid4)
+    records: Mapped[list["Record"]] = relationship('Record', back_populates='user')
 
 
 class Record(Base):
     __tablename__ = 'audio_records'
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    filename = Column(String(150), nullable=False)
-    record = Column(LargeBinary, nullable=False)
-    user_id = Column(Integer, ForeignKey('audio_users.id'))
-    user = relationship('User', back_populates='records')
-
-    def __init__(self, filename, record, user_id):
-        self.filename = filename
-        self.record = record
-        self.user_id = user_id
+    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    filename: Mapped[str] = mapped_column(String(150), nullable=False)
+    record: Mapped[str] = mapped_column(LargeBinary, nullable=False)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('audio_users.id'))
+    user: Mapped["User"] = relationship('User', back_populates='records')
