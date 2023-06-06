@@ -1,4 +1,3 @@
-GRANT ALL PRIVILEGES ON DATABASE bewise TO bewiseusr;
 CREATE TABLE IF NOT EXISTS audio_users(
 	id serial primary key, 
 	name VARCHAR(100), 
